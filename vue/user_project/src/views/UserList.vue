@@ -1,6 +1,7 @@
 <template>
     <div class = "container">
         <table class = "table">
+            <caption> Total : {{ count }} </caption>  <!--전체 게시글 몇 개 ( > computed 속성 기반 연동 ) -->
             <thead>
                 <tr>
                     <th> No. </th>
@@ -12,17 +13,13 @@
             </thead>
 
             <tbody>
-                <tr :key="idx" v-for="(user, idx) in userList">
+                <tr :key="idx" v-for="(user, idx) in userList"
+                @click="goToUserInfo(user_id)">
                     <td>{{user.user_no}} </td>
                     <td>{{user.user_id}} </td>
                     <td>{{user.user_name}} </td>
                     <td>{{user.user_gender}} </td>
-                    <td>{{user.join_date}} </td>
-
-                    <td> </td>
-                    <td> </td>
-                    <td> </td>
-                    <td> </td>
+                    <td>{{dateFormat(user.join_date, 'yyyy년MM월dd일')}} </td>
                 </tr>
             </tbody>
         </table>
@@ -40,12 +37,18 @@
                 userList : [] // list니까 배열로!  기본타입 구분하기! - 초기값 타입 알려주기! 
             }
         },
-        
+        //computed : 수정되면 안되는 data들 의미부여해서 한번 더 Wrapping! 
         computed : {
             //computed에서 관련 속성 이렇게 처리하기도 함. 그냥 배열길이 이렇게 wrapping 한거임.
             count(){
                 return this.userList.length; 
+            },
+
+            date(join_date){
+                return this.dateFormat(join_date);
             }
+
+
         },
 
         //component가 생성되면서 dom으로 mount 되기 전에 created 기반으로 ajax를 돌려야함
@@ -69,7 +72,40 @@
                 //let list = result.data;
 
                 this.userList = list;
-            }
+            },
+
+          goToUserInfo(id){
+            console.log(id);
+            //내부에 등록된 route 호출! (page가 바뀌는거니까 page 등록된  component 불러오겠따! ) 
+            // router링크 사용하지않고 접근하는 방법 用
+                  
+                // 1번. name(path) : route로 등록할 때 사용한 name(path) 속성
+                // 2번. params : REST방식. path 속성이 '/target/:id' 일 때 이렇게 값을 넘겨야함!  {'id' : 100 } 
+                //          → 경로기반('미리' 경로쪽에 정의되어있어야함)으로 특정값을 가져올 때(node 방식을 route에도 사용가능)
+                // 1번 or 2번 => 받는 쪽에서 차이 有
+
+            //직접 라우터 불러옴! "$~" : 옵션 중에서 하나 불러오는거 . "객체"기반 값이 넘어감! path or name 기반으로 불러옴(index.js)
+            this.$router.push({ path : '/userInfo', query : {userId : id}});  //key를 userId로 넘겨줄거임
+      
+          },
+
+          dateFormat(value, format){
+            //joinDate format 바꾸기
+            //yyyy년 MM월 dd일
+            let date = new Date(value);
+            let year = date.getFullYear();
+            let month = ('0' + (date.getMonth()+1)).slice(-2); // 두 자리로 출력하고자 한다면 
+            let day = ('0' + date.getDate()).slice(-2);
+
+            // -를 쓰든 / 쓰든 
+            let result = format.replace('yyyy', year)
+                                .replace('MM', month)
+                                .replace('dd', day);
+
+            //return  `${year}년 ${month}월 ${day}일`;
+            return result;
+          }
+
         }
     }
 
