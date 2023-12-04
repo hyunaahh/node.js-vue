@@ -14,7 +14,7 @@
 
             <tbody>
                 <tr :key="idx" v-for="(user, idx) in userList"
-                @click="goToUserInfo(user_id)">
+                @click="goToUserInfo(user.user_id)">
                     <td>{{user.user_no}} </td>
                     <td>{{user.user_id}} </td>
                     <td>{{user.user_name}} </td>
@@ -73,7 +73,8 @@
 
                 this.userList = list;
             },
-
+        
+        //*UserInfo.vue랑 이어지는부분 
           goToUserInfo(id){
             console.log(id);
             //내부에 등록된 route 호출! (page가 바뀌는거니까 page 등록된  component 불러오겠따! ) 

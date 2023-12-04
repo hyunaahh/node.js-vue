@@ -3,11 +3,11 @@ const target = 'http://localhost:3000'
 
 module.exports = defineConfig({
   transpileDependencies: true,
-
+  lintOnSave : false,
   // 개발하는동안 적용되는 server → 완성되면 이 설정 빠짐 ! 
   devServer :{
     port : 8080,
-
+    
     //어떤경우에 origin을 대체할건지 정의하는거.. 통신시도할때 사용하는 주소
     proxy : {
       //앞부분이 /로 시작되는 경우 proxy를 시작하겠단 의미.
