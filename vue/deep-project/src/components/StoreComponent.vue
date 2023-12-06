@@ -69,7 +69,11 @@ export default {
                 product_name : this.productInfo.product_name,
                 category : this.productInfo.category
             }
-            this.$store.commit('addProduct', obj);
+                //commit : mutations에 등록된 함수 이름 호출! 
+           // this.$store.commit('addProduct', obj);
+
+                //dispatch : action 등록 함수 호출
+            this.$store.dispatch('addProduct', obj);
         }
     }
 }
