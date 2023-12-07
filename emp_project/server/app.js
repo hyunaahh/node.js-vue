@@ -14,7 +14,11 @@ app.listen(3000, ()=> {
     console.log('Server start!, http://localhost:3000')
 });
 
-
+//부서조회
+app.get('/dept', async (req, res)=>{
+    let list = await mysql.query('dept','list');
+    res.send(list);
+})
 
 //전체조회
 app.get('/emps', async (req, res)=>{
